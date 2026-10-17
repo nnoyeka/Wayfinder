@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Wayfinder: plan a trip with live weather, public holidays, currency and country information.">
+    <title>Wayfinder | Trip Planner</title>
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="logo.png" type="image/png">
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+    <!-- Skip link for keyboard and screen reader users -->
+    <a href="#main" class="skip-link">Skip to main content</a>
+
+    <!--  HEADER & NAVIGATION  -->
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="index.html" class="logo-link">
+                <img src="logo_icon.png" alt="" class="logo" width="48" height="48">
+                <span class="logo-text">Wayfinder</span>
+            </a>
+
+            <!-- Hamburger button -->
+            <button type="button" class="menu-toggle" id="menuToggle"
+                    aria-expanded="false" aria-controls="mainNav">
+                <span class="menu-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Menu</span>
+            </button>
+
+            <nav id="mainNav" class="main-nav" aria-label="Main navigation">
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="#plan">Plan a trip</a></li>
+                    <li class="nav-item"><a href="#results">Trip summary</a></li>
+                    <li class="nav-item"><a href="#saved">Saved trips</a></li>
+                    <li class="nav-item"><a href="#about">About</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main">
+
+
+        <section class="hero" aria-labelledby="heroHeading">
+            <h1 id="heroHeading">Plan your next trip in one place</h1>
+            <p>Enter a destination and your dates to see the weather forecast, public holidays,
+               currency conversion and key facts about the country you're visiting.</p>
+            <a href="#plan" class="button button-primary">Start planning</a>
+        </section>
+
+        <!--  TRIP FORM  -->
+        <section id="plan" class="card" aria-labelledby="planHeading">
+            <h2 id="planHeading">Plan a trip</h2>
+            <p class="form-intro">Fields marked <span class="required-marker" aria-hidden="true">*</span>
+               <span class="visually-hidden">with an asterisk</span> are required.</p>
+
+            <form id="tripForm" novalidate>
+
+                <fieldset>
+                    <legend>Where and when</legend>
+
+                    <div class="form-group">
+                        <label for="tripName">Trip name</label>
+                        <input type="text" id="tripName" name="tripName"
+                               maxlength="40" placeholder="e.g. Summer in Split"
+                               aria-describedby="tripNameHelp">
+                        <p id="tripNameHelp" class="help-text">Optional. Used when you save the trip.</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="destination">Destination city <span class="required-marker" aria-hidden="true">*</span></label>
+                        <input type="text" id="destination" name="destination" list="cityList"
+                               required autocomplete="off"
+                               aria-describedby="destinationHelp destinationError">
+                        <datalist id="cityList">
+                            <option value="Zagreb">
+                            <option value="Split">
+                            <option value="Dubrovnik">
+                            <option value="Lisbon">
+                            <option value="Paris">
+                            <option value="Barcelona">
+                            <option value="Rome">
+                            <option value="Prague">
+                            <option value="Tokyo">
+                            <option value="New York">
+                        </datalist>
+                        <p id="destinationHelp" class="help-text">Enter a city or town, e.g. Split, rather than a country.</p>
+                        <p id="destinationError" class="error-message" aria-live="polite"></p>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="startDate">Departure date <span class="required-marker" aria-hidden="true">*</span></label>
+                            <input type="date" id="startDate" name="startDate" required
+                                   aria-describedby="startDateError">
+                            <p id="startDateError" class="error-message" aria-live="polite"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="endDate">Return date <span class="required-marker" aria-hidden="true">*</span></label>
+                            <input type="date" id="endDate" name="endDate" required
+                                   aria-describedby="endDateError">
+                            <p id="endDateError" class="error-message" aria-live="polite"></p>
+                        </div>
+                    </div>
+                    <p class="help-text">Weather forecasts are available for dates up to 16 days ahead.</p>
+
+                    <div class="form-group">
+                        <label for="travellers">Number of travellers <span class="required-marker" aria-hidden="true">*</span></label>
+                        <input type="number" id="travellers" name="travellers"
+                               value="1" min="1" max="20" required
+                               aria-describedby="travellersError">
+                        <p id="travellersError" class="error-message" aria-live="polite"></p>
+                    </div>
+                </fieldset>
+
+                <!-- Trip type (radio buttons) -->
+                <fieldset>
+                    <legend>Type of trip</legend>
+                    <div class="option-group">
+                        <div class="option">
+                            <input type="radio" id="typeCity" name="tripType" value="City break" checked>
+                            <label for="typeCity">City break</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="typeBeach" name="tripType" value="Beach holiday">
+                            <label for="typeBeach">Beach holiday</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="typeAdventure" name="tripType" value="Adventure">
+                            <label for="typeAdventure">Adventure</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="typeBusiness" name="tripType" value="Business">
+                            <label for="typeBusiness">Business</label>
+                        </div>
+                    </div>
+                </fieldset>
+
+               
+                <fieldset>
+                    <legend>Budget</legend>
+
+                    <div class="form-group">
+                        <label for="homeCurrency">Your currency</label>
+                        <select id="homeCurrency" name="homeCurrency">
+                            <option value="GBP" selected>British pound (GBP)</option>
+                            <option value="EUR">Euro (EUR)</option>
+                            <option value="USD">US dollar (USD)</option>
+                            <option value="CAD">Canadian dollar (CAD)</option>
+                            <option value="AUD">Australian dollar (AUD)</option>
+                            <option value="JPY">Japanese yen (JPY)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="destCurrency">Destination currency</label>
+                        <select id="destCurrency" name="destCurrency">
+                            <option value="EUR" selected>Euro (EUR)</option>
+                            <option value="GBP">British pound (GBP)</option>
+                            <option value="USD">US dollar (USD)</option>
+                            <option value="CHF">Swiss franc (CHF)</option>
+                            <option value="CZK">Czech koruna (CZK)</option>
+                            <option value="DKK">Danish krone (DKK)</option>
+                            <option value="NOK">Norwegian krone (NOK)</option>
+                            <option value="PLN">Polish złoty (PLN)</option>
+                            <option value="TRY">Turkish lira (TRY)</option>
+                            <option value="JPY">Japanese yen (JPY)</option>
+                            <option value="THB">Thai baht (THB)</option>
+                            <option value="ZAR">South African rand (ZAR)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="budget">Spending budget per person</label>
+                        <input type="range" id="budget" name="budget"
+                               min="100" max="5000" step="50" value="1000"
+                               aria-describedby="budgetValue">
+                        <output id="budgetValue" for="budget" class="range-output">1,000</output>
+                    </div>
+                </fieldset>
+
+                <!-- Save option (checkbox) -->
+                <div class="option">
+                    <input type="checkbox" id="saveTrip" name="saveTrip" checked>
+                    <label for="saveTrip">Save this trip to my saved trips</label>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="button button-primary" id="submitBtn">Plan my trip</button>
+                    <button type="reset" class="button button-secondary">Clear form</button>
+                </div>
+            </form>
+        </section>
+
+        <!--  RESULTS  -->
+        <section id="results" class="results" aria-labelledby="resultsHeading">
+            <h2 id="resultsHeading" tabindex="-1">Trip summary</h2>
+
+            <!-- screen readers accessibility -->
+            <div id="status" class="status" role="status" aria-live="polite">
+                Fill in the form above to see your trip summary.
+            </div>
+
+            <div id="resultsContent" class="results-grid" hidden>
+
+                <!-- Form details + Open-Meteo Geocoding -->
+                <article class="card result-card" aria-labelledby="overviewHeading">
+                    <h3 id="overviewHeading">Your trip</h3>
+                    <dl id="overviewList" class="detail-list"></dl>
+                </article>
+
+                <!-- World Bank API + flagcdn -->
+                <article class="card result-card" aria-labelledby="countryHeading">
+                    <h3 id="countryHeading">About the country</h3>
+                    <div id="countryInfo"></div>
+                </article>
+
+                <!-- Frankfurter API -->
+                <article class="card result-card" aria-labelledby="currencyHeading">
+                    <h3 id="currencyHeading">Currency</h3>
+                    <div id="currencyInfo"></div>
+                </article>
+
+                <!-- Open-Meteo Forecast API -->
+                <article class="card result-card result-wide" aria-labelledby="weatherHeading">
+                    <h3 id="weatherHeading">Weather forecast</h3>
+                    <ul id="weatherList" class="weather-list"></ul>
+                </article>
+
+                <!-- Nager.Date API -->
+                <article class="card result-card result-wide" aria-labelledby="holidayHeading">
+                    <h3 id="holidayHeading">Public holidays during your trip</h3>
+                    <div class="table-wrapper">
+                        <table>
+                            <caption class="visually-hidden">Public holidays at your destination during your travel dates</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Holiday</th>
+                                    <th scope="col">Local name</th>
+                                </tr>
+                            </thead>
+                            <tbody id="holidayBody"></tbody>
+                        </table>
+                    </div>
+                    <p id="holidayMessage" class="help-text"></p>
+                </article>
+            </div>
+        </section>
+
+        <!--  SAVED TRIPS saved in localStorage  -->
+        <section id="saved" class="card" aria-labelledby="savedHeading">
+            <div class="section-header">
+                <h2 id="savedHeading">Saved trips</h2>
+                <button type="button" class="button button-secondary" id="clearSavedBtn">Clear all</button>
+            </div>
+            <p id="noSavedMessage">You haven't saved any trips yet.</p>
+            <ol id="savedList" class="saved-list"></ol>
+        </section>
+
+        <!--  ABOUT  -->
+        <section id="about" class="card" aria-labelledby="aboutHeading">
+            <h2 id="aboutHeading">About Wayfinder</h2>
+            <p>Wayfinder brings together live data from free public APIs:</p>
+            <ul class="api-list">
+                <li><a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> for city locations and weather forecasts</li>
+                <li><a href="https://datahelpdesk.worldbank.org/knowledgebase/articles/889392" target="_blank" rel="noopener">World Bank API</a> for country facts</li>
+                <li><a href="https://date.nager.at/" target="_blank" rel="noopener">Nager.Date</a> for public holidays</li>
+                <li><a href="https://frankfurter.dev/" target="_blank" rel="noopener">Frankfurter</a> for currency exchange rates</li>
+                <li><a href="https://flagpedia.net/download/api" target="_blank" rel="noopener">Flagpedia (flagcdn)</a> for country flags</li>
+            </ul>
+        </section>
+
+
+    <!--  FOOTER  -->
+    <footer class="site-footer">
+        <p>&copy; 2026 Nnola Oyeka</p>
+        <p><a href="#main">Back to top</a></p>
+    </footer>
+
+</body>
+</html>
